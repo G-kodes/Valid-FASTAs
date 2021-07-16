@@ -2,7 +2,7 @@
     "Data": [
         {
             "Name": "GRCh38",
-            "Path": "/nlustre/users/graeme/Reference Genomes/GRCh38.fa"
+            "Path": "/nlustre/users/graeme/Reference Genomes/GRCh38.fa.gz"
         }
     ],
     "Executables": {

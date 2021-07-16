@@ -10,7 +10,7 @@ with open(os.path.join("config", "config.json"), 'r') as f:
     config = json.load(f)
 
 
-def GetInputFile(wildcards: object) -> str:
+def GetInputFile(wildcards: object = dict()) -> str:
     """A function that returns the absolute path of a file,
     given its input name and the provided paths
 
@@ -20,7 +20,7 @@ def GetInputFile(wildcards: object) -> str:
     Returns:
         str: The relative file path
     """
-    item = ""
+    item = "Error: No Match Found for this input request."
     try:
         item = next(item["Path"]
                     for item in config["Data"] if item["Name"] == wildcards['name'])
@@ -30,7 +30,7 @@ def GetInputFile(wildcards: object) -> str:
     return item
 
 
-def GetFinalOutput() -> List[str]:
+def GetFinalOutput(wildcards: object = dict()) -> List[str]:
     """Returns a list of the final file paths required to complete the pipeline
 
     Returns:
