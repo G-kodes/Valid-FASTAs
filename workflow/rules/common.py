@@ -20,11 +20,15 @@ def GetInputFile(wildcards: object = dict()) -> str:
     Returns:
         str: The relative file path
     """
-    item = "Error: No Match Found for this input request. WILDCARDS: " + \
-        str(wildcards)
+    wildcard = re.search(
+        r"^([A-Z:\\|\/]*)(.+[\\\/])(.+)(\.fa|\.fa\.gz|\.fa\.gz\.faidx)$",
+        wildcards
+    ).group(3)
+    item = "Error: No Match Found for this input request. FILENAME: " + \
+        str(wildcard)
     try:
         item = next(item["Path"]
-                    for item in config["Data"] if item["Name"] == wildcards['name'])
+                    for item in config["Data"] if item["Name"] == wildcard)
     except StopIteration:
         pass
     print("File to fetch as input:", item)
@@ -41,7 +45,7 @@ def GetFinalOutput(wildcards: object = dict()) -> List[str]:
     for item in config['Data']:
         search.append(
             re.search(
-                r"^([A-Z:\\|\/]+)(.+[\\\/])(.+)(\.fa|\.fa\.gz)$",
+                r"^([A-Z:\\|\/]*)(.+[\\\/])(.+)(\.fa|\.fa\.gz)$",
                 item["Path"]
             )
         )

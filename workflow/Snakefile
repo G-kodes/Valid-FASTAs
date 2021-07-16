@@ -12,7 +12,7 @@ validate(config, os.path.join("..", "config", "config.schema.json"))
 
 include: "rules/common.py"
 
-
+ruleorder: CP > BGZIP
 
 rule all:
     input:
@@ -91,7 +91,7 @@ rule SEQUENCE_INDEX:
     input:
         GetInputFile,
     output:
-        "results/{name}.faidx",
+        "results/{name}.fa.gz.faidx",
     params:
         executable=config["Executables"]["SamTools"],
     conda:
