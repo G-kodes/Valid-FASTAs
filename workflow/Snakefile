@@ -14,6 +14,15 @@ include: "rules/common.py"
 
 ruleorder: CP > BGZIP > SEQUENCE_DICTIONARY
 
+wildcard_constraints:
+    path="([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])",
+    filename="(.+)",
+    ext="(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)"
+
+
+^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)$
+^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)$
+
 rule all:
     input:
         GetFinalOutput(),
@@ -26,9 +35,9 @@ rule CP:
     log:
         "results/logs/CP_{file}.log",
     input:
-        GetInputFile,
+        "{path}/{filename}.{ext}",
     output:
-        "results/{file}",
+        "{path}/{filename}.{ext}",
     params:
         executable=config["Executables"]["cp"],
     conda:
@@ -36,7 +45,7 @@ rule CP:
     shell:
         """
         echo 'Copying {input} -> {output}'
-        {params.executable} "{input.file}" "{output}""
+        {params.executable} "{input}" "{output}""
         """
 
 
@@ -47,9 +56,9 @@ rule BGZIP:
     log:
         "results/logs/BGZIP_{name}.log",
     input:
-        GetInputFile,
+        "{path}/{filename}.{ext}",
     output:
-        "results/{name}.fa.gz",
+        "{path}/{filename}.{ext}",
     params:
         executable=config["Executables"]["BGZip"],
     conda:
@@ -57,7 +66,7 @@ rule BGZIP:
     shell:
         """
         echo 'BGZipping {input} -> {output}'
-        {params.executable} < "{input.file}" > "{output}"
+        {params.executable} < "{input}" > "{output}"
         """
 
 
@@ -68,9 +77,9 @@ rule SEQUENCE_DICTIONARY:
     log:
         "results/logs/SEQUENCE_DICTIONARY_{name}.log",
     input:
-        GetInputFile,
+        "{path}/{filename}.{ext}",
     output:
-        "results/{name}.dict",
+        "{path}/{filename}.{ext}",
     params:
         executable=config["Executables"]["GATK"],
     conda:
@@ -89,9 +98,9 @@ rule SEQUENCE_INDEX:
     log:
         "results/logs/SEQUENCE_INDEX_{name}.log",
     input:
-        GetInputFile,
+        "{path}/{filename}.{ext}",
     output:
-        "results/{name}.fa.gz.faidx",
+        "{path}/{filename}.{ext}",
     params:
         executable=config["Executables"]["SamTools"],
     conda:
@@ -99,5 +108,5 @@ rule SEQUENCE_INDEX:
     shell:
         """
         echo 'Making a Sequence Index for {input} -> {output}'
-        {params.executable} faidx "{input.file}" -o "{output}"
+        {params.executable} faidx "{input}" -o "{output}"
         """
