@@ -30,7 +30,7 @@ def GetInputFile(wildcards: object = dict()) -> str:
         item = next(next(file for file in dataset['Files'] if re.search(reX, file).group(
             4) == wildcards.ext and re.search(reX, file).group(3) == wildcards.filename) for dataset in config["Data"])
     except Exception:
-        item = None
+        item = ""
     print("Error: No Match Found for this input request. FILENAME: " +
           wildcards.filename + wildcards.ext)
     return item
