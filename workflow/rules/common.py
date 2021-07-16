@@ -37,7 +37,6 @@ def GetFinalOutput() -> List[str]:
     """
     search = list()
     for item in config['Data']:
-        print(item)
         search.append(
             re.search(
                 r"^([A-Z:\\|\/]+)(.+[\\\/])(.+)(\.fa|\.fa\.gz)$",
