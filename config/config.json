@@ -1,0 +1,14 @@
+{
+    "Data": [
+        {
+            "Name": "GRCh38",
+            "Path": "/nlustre/users/graeme/Reference Genomes/GRCh38.fa"
+        }
+    ],
+    "Executables": {
+        "GATK": "module load gatk-4.0.12.0; gatk",
+        "SamTools": "module load samtools-1.7; samtools",
+        "BGZip": "bgzip",
+        "cp": "cp"
+    }
+}

@@ -1,0 +1,97 @@
+from snakemake.utils import min_version, validate
+import os
+
+min_version("6.0")
+
+
+# DEFINE CONFIG FILE FOR SNAKEMAKE:
+configfile: os.path.join("config", "config.json")
+
+
+validate(config, os.path.join("..", "config", "config.schema.json"))
+
+include: "rules/common.py"
+
+rule CP:
+    """
+    Copy any files that do not require compression or generation
+    """
+    log:
+        "results/logs/CP_{name}.log",
+    input:
+        GetInputFile("{name}"),
+    output:
+        "results/{name}",
+    params:
+        executable=config["Executables"]["cp"],
+    conda:
+        "envs/VALID-FASTAS.yaml"
+    shell:
+        """
+        {params.executable} {input} {output}
+        """
+
+
+rule BGZIP:
+    """
+    Use BG-Zip compression to generate GATK-comaptible `.gz` file for either FASTA or VCF format uncompressed inputs
+    """
+    log:
+        "results/logs/BGZIP_{name}.log",
+    input:
+        GetInputFile("{name}.fnz"),
+    output:
+        "results/{name}.fa.gz",
+    params:
+        executable=config["Executables"]["BGZip"],
+    conda:
+        "envs/VALID-FASTAS.yaml"
+    shell:
+        """
+        {params.executable} < {input} > {output}
+        """
+
+
+rule SEQUENCE_DICTIONARY:
+    """
+    Generate a companion-file sequence dictionary `.dict` file for BG-Zipped FATSA format sequence file
+    """
+    log:
+        "results/logs/SEQUENCE_DICTIONARY_{name}.log",
+    input:
+        GetInputFile("{name}.fa"),
+    output:
+        "results/{name}.dict",
+    params:
+        executable=config["Executables"]["GATK"],
+    conda:
+        "envs/VALID-FASTAS.yaml"
+    shell:
+        """
+        {params.executable} CreateSequenceDictionary -R {input} -O {output}
+        """
+
+
+rule SEQUENCE_INDEX:
+    """
+    Generate companion-file `.faidx` file for FATSA format sequence file
+    """
+    log:
+        "results/logs/SEQUENCE_INDEX_{name}.log",
+    input:
+        GetInputFile("{name}.fa"),
+    output:
+        "results/{name}.faidx",
+    params:
+        executable=config["Executables"]["SamTools"],
+    conda:
+        "envs/VALID-FASTAS.yaml"
+    shell:
+        """
+        {params.executable} faidx {input} -o {output}
+        """
+
+
+rule all:
+    input:
+        GetFinalOutput(),
