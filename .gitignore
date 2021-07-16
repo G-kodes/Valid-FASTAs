@@ -127,3 +127,23 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# VS-Code exclusions
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
+
+# Snakemake exclusions
+.snakemake/*
+
+# Pipeline exclusions
+results/*
+!results/README.md
+resources/*
+!resources/README.md
