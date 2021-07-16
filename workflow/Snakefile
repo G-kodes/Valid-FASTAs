@@ -32,7 +32,7 @@ rule CP:
     log:
         "results/logs/CP_{file}.log",
     input:
-        "{path}/{filename}.{ext}",
+        GetInputFile,
     output:
         "{path}/{filename}.{ext}",
     params:

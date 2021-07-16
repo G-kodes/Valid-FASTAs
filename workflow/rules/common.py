@@ -10,7 +10,7 @@ with open(os.path.join("config", "config.json"), 'r') as f:
     config = json.load(f)
 
 
-def GetCPInputFile(wildcards: object = dict()) -> str:
+def GetInputFile(wildcards: object = dict()) -> str:
     """A function that returns the absolute path of a file,
     given its input name and the provided paths
 
@@ -21,39 +21,15 @@ def GetCPInputFile(wildcards: object = dict()) -> str:
         str: The relative file path
     """
     reX = r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)$"
-    regexMatches = re.search(
-        reX,
-        wildcards.file
-    )
+    # regexMatches = re.search(
+    #     reX,
+    #     wildcards.file
+    # )
     item = "Error: No Match Found for this input request. FILENAME: " + \
-        str(wildcards.file)
+        str(wildcards)
     try:
-        item = next(file for file in item['Files'] if re.search(reX, file).group(4) == regexMatches.group(4) for item in config["Data"]
-                    if item["Name"] == regexMatches.group(3))
-    except StopIteration:
-        pass
-    print("File to fetch as input:", item)
-    return {"file": item}
-
-
-def GetInputFile(wildcards: object = dict()) -> str:
-    """A function that returns the absolute path of a file,
-    given its input name and the rule it was called on.
-
-    Args:
-        wildcards (object): The name of the file
-    Returns:
-        str: The relative file path
-    """
-    wildcard = re.search(
-        r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)$",
-        wildcards.name
-    ).group(3)
-    item = "Error: No Match Found for this input request. FILENAME: " + \
-        str(wildcard)
-    try:
-        item = next(item["Path"]
-                    for item in config["Data"] if item["Name"] == wildcard)
+        item = next(file for file in item['Files'] if re.search(reX, file).group(
+            4) == wildcards.ext and re.search(reX, file).group(3) == wildcards.filename for item in config["Data"])
     except StopIteration:
         pass
     print("File to fetch as input:", item)
