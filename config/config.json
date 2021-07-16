@@ -9,8 +9,8 @@
     ],
     "Executables": {
         "GATK": "module load gatk-4.0.12.0; gatk",
-        "SamTools": "module load samtools-1.7; samtools",
-        "BGZip": "bgzip",
+        "SamTools": "module load samtools-1.7; samtools faidx",
+        "BGZip": "module load samtools-1.7; bgzip",
         "cp": "cp"
     }
 }
