@@ -20,7 +20,8 @@ def GetInputFile(wildcards: object = dict()) -> str:
     Returns:
         str: The relative file path
     """
-    item = "Error: No Match Found for this input request."
+    item = "Error: No Match Found for this input request. WILDCARDS: " + \
+        str(wildcards)
     try:
         item = next(item["Path"]
                     for item in config["Data"] if item["Name"] == wildcards['name'])
