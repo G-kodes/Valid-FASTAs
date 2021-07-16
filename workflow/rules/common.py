@@ -22,7 +22,7 @@ def GetInputFile(wildcards: object = dict()) -> str:
     """
     wildcard = re.search(
         r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)$",
-        wildcards
+        wildcards.name
     ).group(3)
     item = "Error: No Match Found for this input request. FILENAME: " + \
         str(wildcard)

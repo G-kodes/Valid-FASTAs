@@ -12,7 +12,7 @@ validate(config, os.path.join("..", "config", "config.schema.json"))
 
 include: "rules/common.py"
 
-ruleorder: CP > BGZIP
+ruleorder: CP > BGZIP > SEQUENCE_DICTIONARY
 
 rule all:
     input:
