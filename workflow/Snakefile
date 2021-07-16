@@ -16,13 +16,13 @@ ruleorder: CP > BGZIP > SEQUENCE_DICTIONARY
 
 wildcard_constraints:
     path="^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])",
-    # filename="(.+)",
     ext="(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)$"
 
 
 rule all:
     input:
-        GetFinalOutput,
+        # GetFinalOutput,
+        expand("results/{name}.{ext}", name=[item["Name"] for item in config["Data"]], ext=["fa.gz", "fa.gz.faidx", "fa.gz.dict"])
 
 
 rule CP:
@@ -30,11 +30,11 @@ rule CP:
     Copy any files that do not require compression or generation
     """
     log:
-        "{path}/{filename}{ext}.log",
+        "results/{filename}{ext}.log",
     input:
         GetInputFile,
     output:
-        "{path}/{filename}{ext}",
+        "results/{filename}{ext}",
     params:
         executable=config["Executables"]["cp"],
     conda:
@@ -51,11 +51,11 @@ rule BGZIP:
     Use BG-Zip compression to generate GATK-comaptible `.gz` file for either FASTA or VCF format uncompressed inputs
     """
     log:
-        "{path}/{filename}.log",
+        "results/{filename}.log",
     input:
-        "{path}/{filename}.fa",
+        "results/{filename}.fa",
     output:
-        "{path}/{filename}.fa.gz",
+        "results/{filename}.fa.gz",
     params:
         executable=config["Executables"]["BGZip"],
     conda:
@@ -72,11 +72,11 @@ rule SEQUENCE_DICTIONARY:
     Generate a companion-file sequence dictionary `.dict` file for BG-Zipped FATSA format sequence file
     """
     log:
-        "{path}/{filename}.log",
+        "results/{filename}.log",
     input:
-        "{path}/{filename}.fa.gz",
+        "results/{filename}.fa.gz",
     output:
-        "{path}/{filename}.fa.gz.dict",
+        "results/{filename}.fa.gz.dict",
     params:
         executable=config["Executables"]["GATK"],
     conda:
@@ -93,11 +93,11 @@ rule SEQUENCE_INDEX:
     Generate companion-file `.faidx` file for FATSA format sequence file
     """
     log:
-        "{path}/{filename}.log",
+        "results/{filename}.log",
     input:
-        "{path}/{filename}.fa.gz",
+        "results/{filename}.fa.gz",
     output:
-        "{path}/{filename}.fa.gz.faidx",
+        "results/{filename}.fa.gz.faidx",
     params:
         executable=config["Executables"]["SamTools"],
     conda:
