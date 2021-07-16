@@ -1,1 +1,1 @@
-# Valid-FATAs
+# Valid-FASTAs
