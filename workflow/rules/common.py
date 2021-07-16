@@ -28,7 +28,7 @@ def GetInputFile(wildcards: object = dict()) -> str:
         str(wildcard)
     try:
         item = next(item["Path"]
-                    for item in config["Data"] if item["Name"] == wildcard)
+                    for item in config["Data"] if item["Name"] == wildcard.name)
     except StopIteration:
         pass
     print("File to fetch as input:", item)
