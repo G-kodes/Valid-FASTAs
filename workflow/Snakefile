@@ -42,7 +42,7 @@ rule CP:
     shell:
         """
         echo 'Copying {input} -> {output}'
-        {params.executable} "{input}" "{output}""
+        {params.executable} "{input}" "{output}"
         """
 
 
