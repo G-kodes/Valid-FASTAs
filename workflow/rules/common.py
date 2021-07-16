@@ -1,7 +1,7 @@
 __author__ = "Graeme Ford"
 __copyright__ = "Copyright 2021, Graeme Ford"
 __email__ = "graeme.ford@tuks.co.za"
-__license__ = "GNUv3"
+__license__ = "GNU GPLv3"
 
 import os
 import json
