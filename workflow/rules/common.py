@@ -26,6 +26,7 @@ def GetInputFile(name: str) -> str:
                     for item in config["Data"] if item["Name"] == name)
     except StopIteration:
         pass
+    print("File to fetch as input:", item)
     return item
 
 
@@ -43,4 +44,7 @@ def GetFinalOutput() -> List[str]:
                 item["Path"]
             )
         )
-    return ["results/" + item.group(3) + extension for item in search for extension in ['.fa.gz', '.fa.gz.faidx', '.fa.gz.dict']]
+    res = ["results/" + item.group(3) + extension for item in search for extension in [
+        '.fa.gz', '.fa.gz.faidx', '.fa.gz.dict']]
+    print("Files to generate: ", res)
+    return res
