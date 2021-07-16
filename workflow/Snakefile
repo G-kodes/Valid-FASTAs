@@ -22,7 +22,7 @@ wildcard_constraints:
 
 rule all:
     input:
-        GetFinalOutput(),
+        GetFinalOutput,
 
 
 rule CP:
@@ -30,7 +30,7 @@ rule CP:
     Copy any files that do not require compression or generation
     """
     log:
-        "results/logs/CP_{file}.log",
+        "{path}/{filename}.{ext}.log",
     input:
         GetInputFile,
     output:
@@ -51,7 +51,7 @@ rule BGZIP:
     Use BG-Zip compression to generate GATK-comaptible `.gz` file for either FASTA or VCF format uncompressed inputs
     """
     log:
-        "results/logs/BGZIP_{name}.log",
+        "{path}/{filename}.{ext}.log",
     input:
         "{path}/{filename}.{ext}",
     output:
@@ -72,7 +72,7 @@ rule SEQUENCE_DICTIONARY:
     Generate a companion-file sequence dictionary `.dict` file for BG-Zipped FATSA format sequence file
     """
     log:
-        "results/logs/SEQUENCE_DICTIONARY_{name}.log",
+        "{path}/{filename}.{ext}.log",
     input:
         "{path}/{filename}.{ext}",
     output:
@@ -93,7 +93,7 @@ rule SEQUENCE_INDEX:
     Generate companion-file `.faidx` file for FATSA format sequence file
     """
     log:
-        "results/logs/SEQUENCE_INDEX_{name}.log",
+        "{path}/{filename}.{ext}.log",
     input:
         "{path}/{filename}.{ext}",
     output:
