@@ -6,7 +6,7 @@ from typing import List
 
 config = dict()
 
-with open(os.path.join("..", "config", "config.json"), 'r') as f:
+with open(os.path.join("config", "config.json"), 'r') as f:
     config = json.load(f)
 
 
@@ -20,8 +20,12 @@ def GetInputFile(name: str) -> str:
     Returns:
         str: The relative file path
     """
-    item = next(item["Path"]
-                for item in config["Data"] if item["Name"] == name)
+    item = ""
+    try:
+        item = next(item["Path"]
+                    for item in config["Data"] if item["Name"] == name)
+    except StopIteration:
+        pass
     return item
 
 

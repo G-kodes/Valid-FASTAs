@@ -12,6 +12,13 @@ validate(config, os.path.join("..", "config", "config.schema.json"))
 
 include: "rules/common.py"
 
+
+
+rule all:
+    input:
+        GetFinalOutput(),
+
+
 rule CP:
     """
     Copy any files that do not require compression or generation
@@ -90,8 +97,3 @@ rule SEQUENCE_INDEX:
         """
         {params.executable} faidx {input} -o {output}
         """
-
-
-rule all:
-    input:
-        GetFinalOutput(),
