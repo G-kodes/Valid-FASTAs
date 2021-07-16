@@ -53,8 +53,7 @@ def GetFinalOutput(wildcards: object = dict()) -> List[str]:
                 res.append(
                     os.path.join(
                         "results",
-                        reX.group(3),
-                        extension
+                        reX.group(3) + extension
                     )
                 )
 
