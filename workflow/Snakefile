@@ -20,9 +20,6 @@ wildcard_constraints:
     ext="(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)"
 
 
-^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)$
-^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)$
-
 rule all:
     input:
         GetFinalOutput(),
