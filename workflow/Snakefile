@@ -26,7 +26,7 @@ rule CP:
     log:
         "results/logs/CP_{name}.log",
     input:
-        GetInputFile("{name}"),
+        GetInputFile,
     output:
         "results/{name}",
     params:
@@ -47,7 +47,7 @@ rule BGZIP:
     log:
         "results/logs/BGZIP_{name}.log",
     input:
-        GetInputFile("{name}.fnz"),
+        GetInputFile,
     output:
         "results/{name}.fa.gz",
     params:
@@ -68,7 +68,7 @@ rule SEQUENCE_DICTIONARY:
     log:
         "results/logs/SEQUENCE_DICTIONARY_{name}.log",
     input:
-        GetInputFile("{name}.fa"),
+        GetInputFile,
     output:
         "results/{name}.dict",
     params:
@@ -89,7 +89,7 @@ rule SEQUENCE_INDEX:
     log:
         "results/logs/SEQUENCE_INDEX_{name}.log",
     input:
-        GetInputFile("{name}.fa"),
+        GetInputFile,
     output:
         "results/{name}.faidx",
     params:
