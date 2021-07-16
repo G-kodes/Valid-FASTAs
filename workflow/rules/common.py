@@ -25,13 +25,13 @@ def GetInputFile(wildcards: object = dict()) -> str:
     #     reX,
     #     wildcards.file
     # )
-    item = "Error: No Match Found for this input request. FILENAME: " + \
-        str(wildcards)
+
     try:
-        item = next(file for file in item['Files'] if re.search(reX, file).group(
-            4) == wildcards.ext and re.search(reX, file).group(3) == wildcards.filename for item in config["Data"])
-    except StopIteration:
-        pass
+        item = next(next(file for file in dataset['Files'] if re.search(reX, file).group(
+            4) == wildcards.ext and re.search(reX, file).group(3) == wildcards.filename) for dataset in config["Data"])
+    except Exception:
+        item = "Error: No Match Found for this input request. FILENAME: " + \
+            wildcards.filename + wildcards.ext
     print("File to fetch as input:", item)
     return {"file": item}
 
