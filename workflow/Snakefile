@@ -24,11 +24,11 @@ rule CP:
     Copy any files that do not require compression or generation
     """
     log:
-        "results/logs/CP_{name}.log",
+        "results/logs/CP_{file}.log",
     input:
         GetInputFile,
     output:
-        "results/{name}",
+        "results/{file}",
     params:
         executable=config["Executables"]["cp"],
     conda:

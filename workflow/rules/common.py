@@ -20,15 +20,16 @@ def GetInputFile(wildcards: object = dict()) -> str:
     Returns:
         str: The relative file path
     """
-    wildcard = re.search(
-        r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)$",
-        wildcards.name
-    ).group(3)
+    reX = r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)$"
+    regexMatches = re.search(
+        reX,
+        wildcards.file
+    )
     item = "Error: No Match Found for this input request. FILENAME: " + \
-        str(wildcard)
+        str(wildcards.file)
     try:
-        item = next(item["Path"]
-                    for item in config["Data"] if item["Name"] == wildcard)
+        item = next(file for file in item['Files'] if re.search(reX, file).group(4) == regexMatches.group(4) for item in config["Data"]
+                    if item["Name"] == regexMatches.group(3))
     except StopIteration:
         pass
     print("File to fetch as input:", item)
@@ -41,15 +42,21 @@ def GetFinalOutput(wildcards: object = dict()) -> List[str]:
     Returns:
         List[str]: A list of final file paths
     """
-    search = list()
+    res = list()
     for item in config['Data']:
-        search.append(
-            re.search(
-                r"^([A-Z:\\|\/]*)(.+[\\\/])(.+)(\.fa|\.fa\.gz)$",
-                item["Path"]
+        for file in item['Files']:
+            reX = re.search(
+                r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)$",
+                file
             )
-        )
-    res = ["results/" + item.group(3) + extension for item in search for extension in [
-        '.fa.gz', '.fa.gz.faidx', '.fa.gz.dict']]
+            for extension in ['.fa.gz', '.fa.gz.faidx', '.fa.gz.dict']:
+                res.append(
+                    os.path.join(
+                        "results",
+                        reX.group(3),
+                        extension
+                    )
+                )
+
     print("Files to generate: ", res)
     return res
