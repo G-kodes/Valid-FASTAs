@@ -36,7 +36,7 @@ rule CP:
     shell:
         """
         echo 'Copying {input} -> {output}'
-        {params.executable} {input} {output}
+        {params.executable} "{input}" "{output}""
         """
 
 
@@ -57,7 +57,7 @@ rule BGZIP:
     shell:
         """
         echo 'BGZipping {input} -> {output}'
-        {params.executable} < {input} > {output}
+        {params.executable} < "{input}" > "{output}"
         """
 
 
@@ -78,7 +78,7 @@ rule SEQUENCE_DICTIONARY:
     shell:
         """
         echo 'Making a Sequence Dictionary for {input} -> {output}'
-        {params.executable} CreateSequenceDictionary -R {input} -O {output}
+        {params.executable} CreateSequenceDictionary -R "{input}" -O "{output}"
         """
 
 
@@ -99,5 +99,5 @@ rule SEQUENCE_INDEX:
     shell:
         """
         echo 'Making a Sequence Index for {input} -> {output}'
-        {params.executable} faidx {input} -o {output}
+        {params.executable} faidx "{input}" -o "{output}"
         """
