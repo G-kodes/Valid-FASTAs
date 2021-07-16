@@ -36,7 +36,7 @@ rule CP:
     shell:
         """
         echo 'Copying {input} -> {output}'
-        {params.executable} "{input}" "{output}""
+        {params.executable} "{input.file}" "{output}""
         """
 
 
@@ -57,7 +57,7 @@ rule BGZIP:
     shell:
         """
         echo 'BGZipping {input} -> {output}'
-        {params.executable} < "{input}" > "{output}"
+        {params.executable} < "{input.file}" > "{output}"
         """
 
 
@@ -99,5 +99,5 @@ rule SEQUENCE_INDEX:
     shell:
         """
         echo 'Making a Sequence Index for {input} -> {output}'
-        {params.executable} faidx "{input}" -o "{output}"
+        {params.executable} faidx "{input.file}" -o "{output}"
         """

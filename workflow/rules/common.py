@@ -32,7 +32,7 @@ def GetInputFile(wildcards: object = dict()) -> str:
     except StopIteration:
         pass
     print("File to fetch as input:", item)
-    return item
+    return {"file": item}
 
 
 def GetFinalOutput(wildcards: object = dict()) -> List[str]:
