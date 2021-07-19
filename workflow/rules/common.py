@@ -25,7 +25,7 @@ def GetInputFile(wildcards: object = dict()) -> str:
     Returns:
         str: The relative file path
     """
-    reX = r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)$"
+    reX = r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.fai|\.fa\.gz\.dict)$"
     # regexMatches = re.search(
     #     reX,
     #     wildcards.file
@@ -51,10 +51,10 @@ def GetFinalOutput(wildcards: object = dict()) -> List[str]:
     for item in config['Data']:
         for file in item['Files']:
             reX = re.search(
-                r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)$",
+                r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.fai|\.fa\.gz\.dict)$",
                 file
             )
-            for extension in ['.fa.gz', '.fa.gz.faidx', '.fa.gz.dict']:
+            for extension in ['.fa.gz', '.fa.gz.fai', '.fa.gz.dict']:
                 res.append(
                     os.path.join(
                         "results",

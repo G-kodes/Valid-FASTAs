@@ -16,7 +16,7 @@ ruleorder: CP > BGZIP > SEQUENCE_DICTIONARY
 
 wildcard_constraints:
     path="^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])",
-    ext="(\.fa|\.fa\.gz|\.fa\.gz\.faidx|\.fa\.gz\.dict)$"
+    ext="(\.fa|\.fa\.gz|\.fa\.gz\.fai|\.fa\.gz\.dict)$"
 
 
 rule all:
@@ -63,7 +63,7 @@ rule BGZIP:
     shell:
         """
         echo 'BGZipping {input} -> {output}'
-        {params.executable} < "{input}" > "{output}"
+        {params.executable} -c "{input}" > "{output}"
         """
 
 
@@ -90,14 +90,14 @@ rule SEQUENCE_DICTIONARY:
 
 rule SEQUENCE_INDEX:
     """
-    Generate companion-file `.faidx` file for FATSA format sequence file
+    Generate companion-file `.fai` file for FATSA format sequence file
     """
     log:
         "results/{filename}.log",
     input:
         "results/{filename}.fa.gz",
     output:
-        "results/{filename}.fa.gz.faidx",
+        "results/{filename}.fa.gz.fai",
     params:
         executable=config["Executables"]["SamTools"],
     conda:
