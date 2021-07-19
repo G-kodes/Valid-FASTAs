@@ -15,14 +15,13 @@ include: "rules/common.py"
 ruleorder: CP > BGZIP > SEQUENCE_DICTIONARY
 
 wildcard_constraints:
-    path="^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])",
     ext="(\.fa|\.fa\.gz|\.fa\.gz\.fai|\.fa\.gz\.dict)$"
 
 
 rule all:
     input:
         # GetFinalOutput,
-        expand("results/{name}.{ext}", name=[item["Name"] for item in config["Data"]], ext=["fa.gz", "fa.gz.faidx", "fa.gz.dict"])
+        expand("results/{name}.{ext}", name=[item["Name"] for item in config["Data"]], ext=["fa.gz", "fa.gz.fai", "fa.gz.dict"])
 
 
 rule CP:
@@ -102,8 +101,5 @@ rule SEQUENCE_INDEX:
         executable=config["Executables"]["SamTools"],
     conda:
         "envs/VALID-FASTAS.yaml"
-    shell:
-        """
-        echo 'Making a Sequence Index for {input} -> {output}'
-        {params.executable} "{input}" > "{output}"
-        """
+    wrapper:
+        "https://github.com/G-kodes/SmtoolsFaidx"
