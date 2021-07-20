@@ -22,7 +22,7 @@ wildcard_constraints:
 rule all:
     input:
         # GetFinalOutput,
-        expand("results/{name}.{ext}", name=[item["Name"] for item in config["Data"]], ext=["fa.gz", "fa.gz.faidx", "fa.gz.dict"])
+        expand("results/{name}.{ext}", name=[item["Name"] for item in config["Data"]], ext=["fa.gz", "fa.gz.faidx", ".dict"])
 
 
 rule CP:
@@ -76,7 +76,7 @@ rule SEQUENCE_DICTIONARY:
     input:
         "results/{filename}.fa.gz",
     output:
-        "results/{filename}.fa.gz.dict",
+        "results/{filename}.dict",
     params:
         executable=config["Executables"]["GATK"],
     conda:

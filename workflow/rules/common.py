@@ -11,7 +11,7 @@ from typing import List
 
 config = dict()
 
-with open(os.path.join("config", "config.json"), 'r') as f:
+with open(os.path.join("config", "config.json"), "r") as f:
     config = json.load(f)
 
 
@@ -32,12 +32,22 @@ def GetInputFile(wildcards: object = dict()) -> str:
     # )
 
     try:
-        item = next(next(file for file in dataset['Files'] if re.search(reX, file).group(
-            4) == wildcards.ext and re.search(reX, file).group(3) == wildcards.filename) for dataset in config["Data"])
+        item = next(
+            next(
+                file
+                for file in dataset["Files"]
+                if re.search(reX, file).group(4) == wildcards.ext
+                and re.search(reX, file).group(3) == wildcards.filename
+            )
+            for dataset in config["Data"]
+        )
     except Exception:
         item = ""
-    print("Error: No Match Found for this input request. FILENAME: results/" +
-          wildcards.filename + wildcards.ext)
+    print(
+        "Error: No Match Found for this input request. FILENAME: results/"
+        + wildcards.filename
+        + wildcards.ext
+    )
     return item
 
 
@@ -48,19 +58,14 @@ def GetFinalOutput(wildcards: object = dict()) -> List[str]:
         List[str]: A list of final file paths
     """
     res = list()
-    for item in config['Data']:
-        for file in item['Files']:
+    for item in config["Data"]:
+        for file in item["Files"]:
             reX = re.search(
                 r"^([A-Z]{0,1}:{1}[\\|\/]{1,2}){0,1}(.+[\\\/])*(.+)(\.fa|\.fa\.gz|\.fa\.gz\.fai|\.fa\.gz\.dict)$",
-                file
+                file,
             )
-            for extension in ['.fa.gz', '.fa.gz.fai', '.fa.gz.dict']:
-                res.append(
-                    os.path.join(
-                        "results",
-                        reX.group(3) + extension
-                    )
-                )
+            for extension in [".fa.gz", ".fa.gz.fai", ".dict"]:
+                res.append(os.path.join("results", reX.group(3) + extension))
 
     print("Files to generate: ", res)
     return res
